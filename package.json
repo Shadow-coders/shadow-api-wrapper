@@ -1,0 +1,21 @@
+{
+  "name": "shadow-api-wrapper",
+  "version": "0.0.1",
+  "description": "api wrapper nodejs",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "node src/test",
+    "start": "node ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "events": "^3.3.0",
+    "node-fetch": "^2.6.1"
+  },
+  "devDependencies": {
+    "prettier": "2.3.2"
+  }
+}
