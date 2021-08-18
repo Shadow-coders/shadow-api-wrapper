@@ -1,3 +1,11 @@
-for(const file of require('fs').readdirSync(__dirname).filter(f => f !== 'index.js')) {
-    module.exports[file] = require(`./${file}`)
+let Base = require('./Base')
+let Data = require('./Data')
+let Wrapper = require('./main')
+module.exports = {
+    Base,
+    Data,
+    Wrapper,
 }
+let noop = () => {}
+process.on('warning', noop)
+// process.on('uncaughtException', noop)

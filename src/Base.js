@@ -1,5 +1,7 @@
 
 let events = require('events').EventEmitter
+let base = `https://sus.neongamerbotqk.repl.co/api/v1/`
+let Data = require('./Data')
 /**
  * @class 
  * @extends {events}
@@ -8,28 +10,39 @@ let events = require('events').EventEmitter
 class Base extends events {
 constructor(ops) {
    super()
-    Object.entries(ops).forEach(re => {
+    if(ops) {
+        Object.entries(ops).forEach(re => {
         re = { key: re[0], data: re[1] }
         this[re.key] = re.data
     })
+}
     this.ops = ops;
-    this.type =  ops.keytype ? ops.keytype : 'Bearer'
-    this.fetch = requore('node-fetch')
+    this.type =  ops?.keytype ? ops.keytype : 'Bearer'
+    this.fetch = require('node-fetch')
+    this.key = ops?.key
 }
 get toString() {
     return __dirname
 }
 async getResponse(url, prams) {
-if(!typeof url === 'string' && !url.toString) return this.error('INVALID_URL') 
-  if(!typeof prams === 'object' && !prams.toJSON) prams = this.getHeaders(url)
-  if(!prams['Content-Type']) prams['Content-Type'] = this.getHeaders(url)['Content-Type']
-let res = await this.fetch(`${base}/${url}`, prams)
-return new Data(res)
+   // console.log(2)
+    if(!typeof url === 'string' && !url.toString) return this.error('INVALID_URL') 
+  if(!typeof prams === 'object') prams = {
+    'Content-Type': 'application/json',
+   // 'User-Agent': `ShadowApi/${require('../package.json').version} `,
+    'Authorization': `${this.type} ${this.key}`
+}
+
+  if(!prams['Content-Type']) prams['Content-Type'] =  'application/json' //this.getHeaders(url)['Content-Type']
+  url = `${base}${url}`
+  console.log(url)
+let res = await this.fetch(url, prams)
+return new Data(res, await res.json())
 }
 getHeaders(endpoint) {
     return {
         'Content-Type': endpoint !==  '/nono' ? 'application/json' : undefined,
-        'User-Agent': `ShadowApi/${require('../package.json').version} `,
+       // 'User-Agent': `ShadowApi/${require('../package.json').version} `,
         'Authorization': `${this.type} ${this.key}`
     }
 }

@@ -10,26 +10,22 @@ class Data {
    * @public {}
    * @param {Fetch} data 
    */
-    constructor(data) {
-if(!typeof data === 'object' && typeof data !== 'string') {
- data = JSON.parse(JSON.stringify(data))
-} else {
-    throw 'DATA_INVALID got ' + typeof data
-}
-data.text().then(t => {
-    try { 
-       this.message = JSON.parse(t)
-    } catch (e) {
-        this.message = t
-    }
-})
+    constructor(data, text) {
+this.exists = true;
+this.message = text?.message;
+this.code = data.status
+this.url = data.url
+this.data = [data]
+this.text = text;
+this.fetchedAt = Date.now();
 if(!data.ok) {
 this.error = true
 this.code = data.status
 this.status = data.status
+
 switch(data.status) {
     case 401:
-    let err = new Error(typeof this.message !== 'string' ? this.message.message : this.message)
+    let err = new Error(typeof this.message !== 'string' ? this.message?.message : this.message)
     err.message = this.message  
     this.err = err
 break;
