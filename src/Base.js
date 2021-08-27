@@ -32,14 +32,14 @@ async getResponse(url, prams) {
       prams.method = 'GET'
       prams.headers = {
         'Content-Type': 'application/json',
-        'User-Agent': `ShadowApi/${require('../package.json').version} `,
+        'User-Agent': `ShadowApi/${require('../package.json').version} (api)`,
         'Authorization': `${this.type} ${this.key}`
     }
     } 
 
   if(!prams.headers['Content-Type']) prams.headers['Content-Type'] =  'application/json' //this.getHeaders(url)['Content-Type']
   if(!prams.headers['Authorization']) prams.headers['Authorization'] = `${this.type} ${this.key}`
-  url = `${base}${url}`
+  url = `${this.database ? `https://sus.neongamerbotqk.repl.co/db/v1/` : base}${url}`
  // console.log(url)
 let res = await this.fetch(url, prams)
 return new Data(res, await res.json())
