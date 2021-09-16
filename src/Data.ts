@@ -5,12 +5,17 @@ let fetch = require('node-fetch').Response
  * @private
  */
 class Data {
-  /**
-   * @constructor
-   * @public {}
-   * @param {Fetch} data 
-   */
-    constructor(data, text) {
+  exists: Boolean
+  message: any
+  code: Number
+  url: String
+  data: Array<Response>
+  text: Object
+  fetchedAt: Number
+  error?: Boolean
+  status?: Number
+  err: any
+    constructor(data: any, text: any) {
 this.exists = true;
 this.message = text?.message;
 this.code = data.status
@@ -25,7 +30,7 @@ this.status = data.status
 
 switch(data.status) {
     case 401:
-    let err = new Error(typeof this.message !== 'string' ? this.message?.message : this.message)
+    let err = new Error(this.message)
     err.message = this.message  
     this.err = err
 break;
@@ -43,7 +48,7 @@ break;
  * @returns {String}
  */
 toString() {
-    return this.message?.message;
+    return this.message;
 }
 /**
  * 
@@ -81,4 +86,4 @@ is404() {
     return this.status === 401 || this.status === 403
  }
 }
-module.exports = Data;
+export default { Data: Data };
